@@ -1,6 +1,6 @@
 // start slingin' some d3 here.
 var gameOptions =
-  {height: 450,
+  {height: 900,
   width: 700,
   nEnemies: 30,
   padding: 20};
@@ -17,67 +17,41 @@ var gameBoard = d3.select('.board').append('svg')
               .attr('width', gameOptions.width)
               .attr('height', gameOptions.height);
 //===============================PLAYER =====================================
-var svg = d3.select('svg');
 
+   // alert('dropped');
 // DATA JOIN
 // Join new data with old elements, if any.
-var player = svg.selectAll('circle.player')
-  .data([{id: 1}], function(d) { return d.id; });
+var onDragDrop = function(dragHandler, dropHandler) {
+  var drag = d3.behavior.drag();
 
-// UPDATE
-// Update old elements as needed.
-player
-    .attr('cx', function(enemy) { return axes.x(50); } )
-    .attr('cy', function(enemy) { return axes.y(50); } );
-
-// ENTER
-// Create new elements as needed.
-//
-// ENTER + UPDATE
-// After merging the entered elements with the update selection,
-// apply operations to both.
-player.enter().append('circle')
-    .attr('class', 'player')
-    .attr('cx', function(enemy) { return axes.x(50); } )
-    .attr('cy', function(enemy) { return axes.y(50); } )
-    .attr('r', 20)
-    .style('fill', 'yellow');
-    //.pieces(function(d) { return d.id; });
- // .merge(text)
-   // .attr("x", function(d, i) { return i * 32; });
+  drag.on('drag', dragHandler)
+  .on('dragend', dropHandler);
+  return drag;
+};
 
 
-// EXIT
-// Remove old elements as needed.
-player.exit().remove();
+var dropHandler = function(d) {
+   // alert('dropped');
+};
+
+var dragmove = function(d) {
+  d3.select(this)
+  .attr('cx', d.x = d3.event.x)
+  .attr('cy', d.y = d3.event.y);
+};
+
+var player = d3.select('body').select('svg').append('g')
+.data([{ x: axes.x(50), y: axes.y(50) }]);
+
+player.append('circle')
+.attr('class', 'player')
+.attr('r', 10)
+.attr('cx', function(d) { return d.x; } )
+.attr('cy', function(d) { return d.y; } )
+.attr('fill', 'red')
+.call(onDragDrop(dragmove, dropHandler));
 
 
-// var click = function() {
-
-//   // Extract the click location\    
-//    var point = d3.mouse(this);
-//    console.log(point);
-//    //var p = {x: point[0], y: point[1] };
-//   var svg = d3.select('svg');
-
-//   // Append a new point
-//   svg.selectAll('circle').append('circle')
-//       // .attr('transform', 'translate(' + p.x + ',' + p.y + ')')
-//       .attr('r', '5')
-//       .attr('class', "dot")
-//       .style("fill", "yellow");
-//       //.call(drag);
-// };
-// click();
-
-// var drag = d3.behavior.drag()
-//     .on("drag", dragmove);
-
-// function dragmove(d) {
-//   var x = d3.event.x;
-//   var y = d3.event.y;
-//   d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
-// }
 
 //===============================ENEMIESssss ================================
 var enemies = [];
@@ -139,3 +113,15 @@ makeEnemies();
 setInterval(function() {
   update(enemies);
 }, 1000);
+
+
+
+
+
+
+
+
+
+
+
+
