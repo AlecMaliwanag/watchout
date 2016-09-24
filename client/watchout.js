@@ -7,8 +7,10 @@ var gameOptions =
 
 var gameStats = {
   score: 0,
-  bestScore: 0};
-
+  bestScore: 0,
+  collisions: 0
+};
+var collided = false;
 var axes = { 
   x: d3.scale.linear().domain([0, 100]).range([0, gameOptions.width]),
   y: d3.scale.linear().domain([0, 100]).range([0, gameOptions.height])};
@@ -150,7 +152,8 @@ var checkCollision = function() {
     //console.log(d3.select('.player').attr('cx'), d3.select(this).attr('cx'));
     separation = Math.sqrt( Math.pow(xDiff, 2) + Math.pow(yDiff, 2) );
     if (separation < radiusSum) {
-      console.log('fuuuuuuuuuck');
+      collided = true;
+      gameStats.score = 0;
     }
   });
 };
@@ -171,13 +174,30 @@ makeEnemies();
 
 //       ))
 // };
+var gatecheck = function() {
+  if (collided === true) {
+    gameStats.collisions++;
+    collided = false;
+  }
+};
+var scoreIncrease = function() {
+  gameStats.score += .4;
 
+  d3.select('.current').selectAll('span').text('' + Math.floor(gameStats.score));
+  if (gameStats.score > gameStats.bestScore) {
+    gameStats.bestScore = gameStats.score;
+  }
+  d3.select('.highscore').selectAll('span').text('' + Math.floor(gameStats.bestScore));
+  d3.select('.collisions').selectAll('span').text('' + gameStats.collisions);
+};
 setInterval(function() {
   checkCollision();
+  scoreIncrease();
 }, 40);
 
 setInterval(function() {
   update(enemies);
+  gatecheck();
   //helga();
   //console.log(d3.selectAll("circle.enemy'").attr("cx"));
 //   var pieces = d3.selectAll('circle.enemy');
@@ -185,7 +205,7 @@ setInterval(function() {
 //    pieces.forEach(function(enemy) {
 //      checkCollision(enemy, function(){console.log("freud likes butts")});
 //    });
-}, 2000);
+}, 1000);
 
 
 
