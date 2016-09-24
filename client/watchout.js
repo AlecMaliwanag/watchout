@@ -80,6 +80,7 @@ var update = function (data) {
       .duration(1000)
       .attr('cx', function(enemy) { return axes.x(Math.random() * 100); } )
       .attr('cy', function(enemy) { return axes.y(Math.random() * 100); } );
+      //.call(checkCollision(this,function() {console.log("hihi");}));
 
   // ENTER
   // Create new elements as needed.
@@ -87,15 +88,49 @@ var update = function (data) {
   // ENTER + UPDATE
   // After merging the entered elements with the update selection,
   // apply operations to both.
+
   pieces.enter().append('circle')
       .attr('class', 'enemy')
       .attr('cx', function(enemy) { return axes.x(enemy.x); } )
       .attr('cy', function(enemy) { return axes.y(enemy.y); } )
-      .attr('r', 10)
-      .style('background-image', 'url("asteroid.png")');
-      //.pieces(function(d) { return d.id; });
-   // .merge(text)
-     // .attr("x", function(d, i) { return i * 32; });
+      .attr('r', 20);
+      //.call(checkCollision(this,function() {console.log("hihi");}));
+
+  
+
+  // var onCollision = function() {
+  //   updateBestScore();
+  //   gameStats.score = 0;
+  //   updateScore();
+  // };
+
+  // var tweenWithCollisionDetection = function(endData) {
+  //   var enemy = d3.select(this);
+  //   var startPos = {
+  //     x: parseFloat(enemy.attr('cx')),
+  //     y: parseFloat(enemy.attr('cy'))
+  //   };
+  //   var endPos = {
+  //     x: axes.x(endData.x),
+  //     y: axes.y(endData.y)
+  //   };
+  //   return function(t) {
+  //     checkCollision(enemy, onCollision)
+  //     var enemyNextPos = {
+  //       x: startPos.x + (endPos.x - startPos.x)*t,
+  //       y: startPos.y + (endPos.y - startPos.y)*t
+  //     };
+  //     enemy.attr('cx', enemyNextPos.x)
+  //     .attr('cy', enemyNextPos.y);
+  //   };
+
+  // }  ;
+
+  // pieces
+  //   .transition()
+  //     .duration(2000)
+  //     .tween('custom', tweenWithCollisionDetection) 
+      
 
 
   // EXIT
@@ -105,14 +140,52 @@ var update = function (data) {
 
 
 
+//=================================COLLISIONSssss=======================
+var checkCollision = function() {
+  d3.selectAll('.enemy').each(function(d) {
+    enemyR = d3.select(this).attr('r');
+    radiusSum = parseFloat(d3.select('.player').attr('r')) + parseFloat(enemyR);
+    xDiff = parseFloat(d3.select(this).attr('cx')) - parseFloat(d3.select('.player').attr('cx'));
+    yDiff = parseFloat(d3.select(this).attr('cy')) - parseFloat(d3.select('.player').attr('cy'));
+    //console.log(d3.select('.player').attr('cx'), d3.select(this).attr('cx'));
+    separation = Math.sqrt( Math.pow(xDiff, 2) + Math.pow(yDiff, 2) );
+    if (separation < radiusSum) {
+      console.log('fuuuuuuuuuck');
+    }
+  });
+};
+
+
 //DO STUFF
 
 
 makeEnemies();
 
+
+  // DATA JOIN
+//   // Join new data with old elements, if any.
+// function helga() {
+//     update(enemies);
+//     var enemies = d3.selectAll("circle.enemy");
+//     enemies.call(checkCollision(this
+
+//       ))
+// };
+
+setInterval(function() {
+  checkCollision();
+}, 40);
+
 setInterval(function() {
   update(enemies);
-}, 1000);
+  //helga();
+  //console.log(d3.selectAll("circle.enemy'").attr("cx"));
+//   var pieces = d3.selectAll('circle.enemy');
+// console.log(pieces);
+//    pieces.forEach(function(enemy) {
+//      checkCollision(enemy, function(){console.log("freud likes butts")});
+//    });
+}, 2000);
 
 
 
