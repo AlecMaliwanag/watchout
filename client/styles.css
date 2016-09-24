@@ -4,7 +4,7 @@
 Feel free to use it if you like. */
 
 circle.enemy {
-  fill: green;
+  fill: white;
   background-image: url("asteroid.png");
   background-size: cover;
   height: auto;
@@ -27,6 +27,10 @@ video {
     -moz-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
-    background-size: cover; 
+    background-size: 900px 900px; 
     background: url("inspiration.mp4");
+}
+
+.scoreboard {
+  color: white;
 }

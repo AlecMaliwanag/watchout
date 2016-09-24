@@ -1,7 +1,7 @@
 // start slingin' some d3 here.
 var gameOptions =
   {height: 900,
-  width: 700,
+  width: 900,
   nEnemies: 30,
   padding: 20};
 
