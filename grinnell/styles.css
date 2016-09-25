@@ -1,0 +1,36 @@
+/* your beautiful css styling goes here! */
+
+/* Note: an asteroid image is included in this repo.
+Feel free to use it if you like. */
+
+circle.enemy {
+  fill: white;
+  background-image: url("asteroid.png");
+  background-size: cover;
+  height: auto;
+  width: auto;
+  z-index: -10;
+}
+
+video { 
+    display: inline;
+    position: absolute;
+    z-index: -100;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background-size: 900px 900px; 
+    background: url("inspiration.mp4");
+}
+
+.scoreboard {
+  color: white;
+}
